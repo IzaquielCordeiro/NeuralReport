@@ -22,13 +22,13 @@ def drive_search(path=None, format="kwik", follow_links=True, verbose=True, file
                     s = sum([os.stat(name, dir_fd=rootfd).st_size for name in f if fnmatch.fnmatch(name, pattern)])
                     if not files:
                        [result[pdir].append(root.split('/')[-1])]
+                       total_size += s
                     if files: 
                       [result[root].append(name) for name in f if fnmatch.fnmatch(name, pattern)]
                     if verbose and files:
                         print(f"found \033[4m{s}\033[0m consuming ", end="")
                         print(s,  end="")
                         print(f" bytes ({s/1024**2} megabytes) in \033[4m{len(f)}\033[0m non-directory files")
-                    total_size += s
                     break
 
         if verbose:
