@@ -459,7 +459,7 @@ class _AnalysisScreen(AppLayout):
     temp['time'] = pd.to_datetime(temp['datetime'], unit='f').dt.strftime('%H:%M:%S:%f')
 
     fig =  xp.histogram(x=temp.time, y=temp.spike_at, color=temp.shank_label if color else None, histfunc='sum').update_layout(
-        title_text='Spikes Distribution Count by Time Fequency', 
+        title_text='Spikes Count by Time Fequency', 
         xaxis_title_text='Time', 
         yaxis_title_text='Count',
         hovermode="x unified"
