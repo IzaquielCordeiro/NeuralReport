@@ -6,13 +6,6 @@ sys.setrecursionlimit(10**6)
 import os, fnmatch
 from pathlib import Path
 
-import logging.config
-logging.config.dictConfig({
-    'version': 1,
-    'disable_existing_loggers': True,
-})
-
-
 def drive_search(path=None, format="kwik", follow_links=True, verbose=True, files=False):
     pattern = f"*.{format}"
     total_size = 0
@@ -553,3 +546,15 @@ class _PlotBox(VBox):
   
   def clear_output(self):
     self.output.clear_output()
+
+
+import warnings
+import logging.config
+
+if __name__ == "report":
+  warnings.filterwarnings('ignore')
+
+  logging.getLogger("imported_module").setLevel(logging.WARNING)
+  logging.config.dictConfig({
+      'version': 1,
+      'disable_existing_loggers': True,})
