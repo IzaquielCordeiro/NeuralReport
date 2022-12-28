@@ -392,13 +392,13 @@ class _AnalysisScreen(AppLayout):
 
     self.fr_delta_window = ipw.BoundedFloatText(value=0.5, min=1, max=10000.0, step=0.1, description='', layout=ipw.Layout(width="30%"))
     self.fr_smoothing_coef = ipw.BoundedIntText(value=25, min=1, max=100, step=1, description='', layout=ipw.Layout(width="30%"))
-    self.fr_header = ipw.HBox(children=[ipw.HTML(value="<h2>Firing Rates Trend</h2>"), ipw.HBox(children=[ipw.Label(value='Interval (s)'), self.fr_delta_window]), ipw.HBox(children=[ipw.Label(value='Smoothing Coeficient'), self.fr_smoothing_coef])], layout=ipw.Layout(padding="0 2% 0 2%", align_items="center", justify_content="space-between"))
+    self.fr_header = ipw.HBox(children=[ipw.HTML(value="<h2>Firing Rates Trend</h2>"), ipw.HBox(children=[ipw.Label(value='Interval (s)'), self.fr_delta_window]), ipw.HBox(children=[ipw.Label(value='Smoothing Coefficient'), self.fr_smoothing_coef])], layout=ipw.Layout(padding="0 2% 0 2%", align_items="center", justify_content="space-between"))
     self.fr_PlotBox =  _PlotBox(header=self.fr_header)
    
     self.CV_delta_window = ipw.BoundedFloatText(value=60, min=0.5, max=10000.0, step=0.5, description='', layout=ipw.Layout(width="30%"))
     self.CV_fr_delta_window = ipw.BoundedFloatText(value=10, min=.05, max=100.0, step=.05, description='', layout=ipw.Layout(width="30%"))
     self.CV_smoothing_coef = ipw.BoundedIntText(value=25, min=1, max=100, step=1, description='', layout=ipw.Layout(width="30%"))
-    self.CV_header = ipw.HBox(children=[ipw.HTML(value="<h2>Coefficient of Variation Trend</h2>"), ipw.HBox(children=[ipw.Label(value='Interval (s)'), self.CV_delta_window]), ipw.HBox(children=[ipw.Label(value='Fire Rating Interval (s)'), self.CV_fr_delta_window]), ipw.HBox(children=[ipw.Label(value='Smoothing Coeficient'), self.CV_smoothing_coef])], layout=ipw.Layout(padding="0 2% 0 2%", align_items="center", justify_content="space-between"))
+    self.CV_header = ipw.HBox(children=[ipw.HTML(value="<h2>Coefficient of Variation Trend</h2>"), ipw.HBox(children=[ipw.Label(value='Interval (s)'), self.CV_delta_window]), ipw.HBox(children=[ipw.Label(value='Firing Rate Interval (s)'), self.CV_fr_delta_window]), ipw.HBox(children=[ipw.Label(value='Smoothing Coefficient'), self.CV_smoothing_coef])], layout=ipw.Layout(padding="0 2% 0 2%", align_items="center", justify_content="space-between"))
     self.CV_PlotBox = _PlotBox(header=self.CV_header)
 
     self.firing_rates_histplot_nbins = ipw.BoundedIntText(value=10, min=0, max=500, step=1, description='', layout=ipw.Layout(width="45%"))
