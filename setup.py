@@ -117,7 +117,6 @@ class DataFile:
 
 
 
-from neuraltoolkit.pedros import LocalPopulation
 from itertools import repeat
 import pandas as pd
 import numpy as np
