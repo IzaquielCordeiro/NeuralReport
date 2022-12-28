@@ -475,6 +475,7 @@ class _AnalysisScreen(AppLayout):
     raster_fig = ax.scatter(data=activities, x='spike_at', y='neuron_id', c=color, cmap='Dark2', marker='|')
     ax.set_xticklabels(pd.to_datetime(pd.Series(ax.get_xticks()), unit='s').dt.strftime('%H:%M:%S').values)
     ax.tick_params(axis='x', which='major', labelsize=20)
+    ax.spines['right'].set_visible(False)
     try:
       plt.legend(handles=raster_fig.legend_elements()[0], labels=activities.shank_label.unique().tolist(), fontsize='x-large', markerscale=2, bbox_to_anchor=(1, 1), fancybox=True, shadow=True, prop={'size': 15})
     except ValueError:  
