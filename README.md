@@ -19,7 +19,7 @@ Params:</p>
 <sub>Diferentiate spikes for each shunk.</sub></li>
 </ul>
 <h3 id="spikes-distribution">Spikes Distribution</h3>
-<p><img src="https://drive.google.com/uc?export=view&amp;id=1gNV52gzRw0_L4Ytmleup__-UaC2AZ9lO" alt="raster plot"><br>
+<p><img src="https://drive.google.com/uc?export=view&amp;id=1gNV52gzRw0_L4Ytmleup__-UaC2AZ9lO" alt="spikes distribution"><br>
 A dynamic Plotly graph that shows the distribution of Spikes over time.<br>
 Params:</p>
 <ul>
@@ -29,7 +29,7 @@ Params:</p>
 <sub>Diferentiate spike counts for each shank</sub></li>
 </ul>
 <h3 id="firing-rates-trend">Firing Rates Trend</h3>
-<p><img src="https://drive.google.com/uc?export=view&amp;id=1qxHSWNuSnQdheIrlXgTx5xqyKDFoMVDK" alt="raster plot"><br>
+<p><img src="https://drive.google.com/uc?export=view&amp;id=1qxHSWNuSnQdheIrlXgTx5xqyKDFoMVDK" alt="firing rates trend"><br>
 A dynamic Plotly graph that shows the Trend of Firing Rates over time.<br>
 Params:</p>
 <ul>
@@ -39,7 +39,7 @@ Params:</p>
 <sub>Rate to calculate <em>Smoothed Average</em> line using <a href="https://numpy.org/doc/stable/reference/generated/numpy.convolve.html">numpy.convolve</a></sub></li>
 </ul>
 <h3 id="coefficient-of-variation">Coefficient of Variation</h3>
-<p><img src="https://drive.google.com/uc?export=view&amp;id=17YI34K5aSqp4n1jXKNQBeglNBmu3SlIS" alt="raster plot"><br>
+<p><img src="https://drive.google.com/uc?export=view&amp;id=17YI34K5aSqp4n1jXKNQBeglNBmu3SlIS" alt="coefficient of variation"><br>
 A dynamic Plotly graph that shows the Trend of Coefficient of Variation over time.<br>
 Params:</p>
 <ul>
@@ -51,7 +51,7 @@ Params:</p>
 <sub>Rate to calculate <em>Smoothed Average</em> line using <a href="https://numpy.org/doc/stable/reference/generated/numpy.convolve.html">numpy.convolve</a></sub></li>
 </ul>
 <h3 id="firing-rates-distribution">Firing Rates Distribution</h3>
-<p><img src="https://drive.google.com/uc?export=view&amp;id=1FrfmF4zE_ps7hsM0Z32WMKAfWdjdGk8t" alt="raster plot"><br>
+<p><img src="https://drive.google.com/uc?export=view&amp;id=1FrfmF4zE_ps7hsM0Z32WMKAfWdjdGk8t" alt="firing rates"><br>
 A dynamic Plotly graph that shows the Distribution of Firing Rates by Frequency.<br>
 Params:</p>
 <ul>
