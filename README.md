@@ -1,4 +1,4 @@
-<p><a href="https://colab.research.google.com/github/IzaquielCordeiro/NeuralReport/blob/main/NeuralReport.ipynb"> <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a></p>
+<p><a href="https://colab.research.google.com/github/IzaquielCordeiro/NeuralReport/blob/main/NeuralReport.ipynb" target="_blank"> <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a></p>
 <h1 id="neural-report"><strong><code>Neural Report</code></strong></h1>
 <p>This is a project from my final paper in Computer Science by <a href="https://www.google.com/maps/place/UFCG+-+Campus+Campina+Grande/@-7.2171368,-35.9097543,15z/data=!4m5!3m4!1s0x0:0xd98e854f0b0d6fe1!8m2!3d-7.2171368!4d-35.9097543">Federal University of Campina Grande</a> A Colab Notebook intergrated with Google Drive that seeks and load spike train data acquired from extracelular recordings, where microprobes measures electrophysiology activity of the brain <em>in-vivo</em>.</p>
 <h2 id="spike-sorting---scholarpedia">[Spike sorting - Scholarpedia]</h2>
