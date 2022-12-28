@@ -398,12 +398,12 @@ class _AnalysisScreen(AppLayout):
     self.CV_delta_window = ipw.BoundedFloatText(value=60, min=0.5, max=10000.0, step=0.5, description='', layout=ipw.Layout(width="30%"))
     self.CV_fr_delta_window = ipw.BoundedFloatText(value=10, min=.05, max=100.0, step=.05, description='', layout=ipw.Layout(width="30%"))
     self.CV_smoothing_coef = ipw.BoundedIntText(value=25, min=1, max=100, step=1, description='', layout=ipw.Layout(width="30%"))
-    self.CV_header = ipw.HBox(children=[ipw.HTML(value="<h2>Coefficient of Variation Trend</h2>"), ipw.HBox(children=[ipw.Label(value='Interval (s)'), self.CV_delta_window]), ipw.HBox(children=[ipw.Label(value='fr Interval (s)'), self.CV_fr_delta_window]), ipw.HBox(children=[ipw.Label(value='Smoothing Coeficient'), self.CV_smoothing_coef])], layout=ipw.Layout(padding="0 2% 0 2%", align_items="center", justify_content="space-between"))
+    self.CV_header = ipw.HBox(children=[ipw.HTML(value="<h2>Coefficient of Variation Trend</h2>"), ipw.HBox(children=[ipw.Label(value='Interval (s)'), self.CV_delta_window]), ipw.HBox(children=[ipw.Label(value='Fire Rating Interval (s)'), self.CV_fr_delta_window]), ipw.HBox(children=[ipw.Label(value='Smoothing Coeficient'), self.CV_smoothing_coef])], layout=ipw.Layout(padding="0 2% 0 2%", align_items="center", justify_content="space-between"))
     self.CV_PlotBox = _PlotBox(header=self.CV_header)
 
     self.firing_rates_histplot_nbins = ipw.BoundedIntText(value=10, min=0, max=500, step=1, description='', layout=ipw.Layout(width="45%"))
     self.firing_rates_colorize = ipw.Checkbox(description="Colorize Shanks", value=False, style={"description_width":"initial"})
-    self.firing_rates_histplot_header = ipw.HBox(children=[ipw.HTML(value="<h2>Firing Rates Histogram</h2>"), ipw.HBox(children=[ipw.Label(value='Bins'), self.firing_rates_histplot_nbins]), self.firing_rates_colorize], layout=ipw.Layout(padding="0 2% 0 2%", align_items="center", justify_content="space-between"))
+    self.firing_rates_histplot_header = ipw.HBox(children=[ipw.HTML(value="<h2>Firing Rates Distribution</h2>"), ipw.HBox(children=[ipw.Label(value='Bins'), self.firing_rates_histplot_nbins]), self.firing_rates_colorize], layout=ipw.Layout(padding="0 2% 0 2%", align_items="center", justify_content="space-between"))
     self.firing_rates_PlotBox = _PlotBox(header=self.firing_rates_histplot_header)  
     
     self.graphs = ipw.VBox(children=[self.raster_PlotBox, self.spikes_dist_PlotBox, self.fr_PlotBox, self.CV_PlotBox, self.firing_rates_PlotBox], layout=ipw.Layout(width="100%", border="1px solid gray"))
@@ -459,7 +459,7 @@ class _AnalysisScreen(AppLayout):
     temp['time'] = pd.to_datetime(temp['datetime'], unit='f').dt.strftime('%H:%M:%S:%f')
 
     fig =  xp.histogram(x=temp.time, y=temp.spike_at, color=temp.shank_label if color else None, histfunc='sum').update_layout(
-        title_text='Spikes Dist Count by Fequency', 
+        title_text='Spikes Distribution Count by Time Fequency', 
         xaxis_title_text='Time', 
         yaxis_title_text='Count',
         hovermode="x unified"
@@ -496,7 +496,7 @@ class _AnalysisScreen(AppLayout):
         hovermode="x unified"
       )
 
-      return fig.update_traces(hovertemplate='Firing Rates: %{y}')
+      return fig.update_traces(hovertemplate='Firing Rate: %{y}')
 
 
   def _refresh_views(self, **args):
@@ -518,7 +518,7 @@ class _AnalysisScreen(AppLayout):
       with self.fr_PlotBox.get_output():
         print()
         fr_df = animal.get_fr(binsize=args.get("fr_delta"), smoothing=args.get("fr_smooth_coef")).set_index("Hours")
-        fr_fig = self._fig_graph(fr_df.fillna(0), title=f'Firing Rate', ylabel='Count')
+        fr_fig = self._fig_graph(fr_df.fillna(0), title=f'Firing Rates', ylabel='Count')
         display(fr_fig)
       with self.CV_PlotBox.get_output():
         print()
