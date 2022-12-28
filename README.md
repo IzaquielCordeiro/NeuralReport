@@ -56,7 +56,7 @@ A dynamic Plotly graph that shows the Distribution of Firing Rates by Frequency.
 Params:</p>
 <ul>
 <li>Bins: int (default: 10)<br>
-<sub>Number of Bins.&lt;\sub&gt;</sub></li>
+<sub>Number of Bins.</sub></li>
 <li>Colorize Shanks: bool (default: False)<br>
 <sub>Diferentiate firing rates count for each shunk.</sub></li>
 </ul>
