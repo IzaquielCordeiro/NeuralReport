@@ -123,8 +123,8 @@ class Animal:
       self.spike_train = spike_train.sort_values('spike_at', ascending=True)
       self.start, self.end = 0, -1
     
-    def get_ifr(self, binsize=10, smoothing=25):      
-      ifr_df = pd.DataFrame(columns=['Time'])
+    def get_fr(self, binsize=10, smoothing=25):      
+      fr_df = pd.DataFrame(columns=['Time'])
       spike_train = self.get_spike_train()
       start, end = spike_train.spike_at.min(), spike_train.spike_at.max()
       shanks = spike_train.shank_label.unique()
@@ -135,26 +135,26 @@ class Animal:
         bins = np.arange(start, end, step = binsize)
         count, bins = np.histogram(shank_spike_train.spike_at, bins = bins)
         
-        ifr  = pd.Series(count/(binsize*n_neurons), index = bins[:-1])
-        ifr_df[shank_label] = ifr.values
-        ifr_df['Time'] = ifr.index
+        fr  = pd.Series(count/(binsize*n_neurons), index = bins[:-1])
+        fr_df[shank_label] = fr.values
+        fr_df['Time'] = fr.index
 
-      ifr_df["Smoothed Average"] = pd.Series(self._smoothing(ifr_df[shanks].apply('mean', axis=1), smoothing))
-      ifr_df['Hours'] = pd.to_datetime(ifr_df.Time, unit='s').dt.strftime('%H:%M:%S:%f')
+      fr_df["Smoothed Average"] = pd.Series(self._smoothing(fr_df[shanks].apply('mean', axis=1), smoothing))
+      fr_df['Hours'] = pd.to_datetime(fr_df.Time, unit='s').dt.strftime('%H:%M:%S:%f')
 
-      return ifr_df.set_index('Time')
+      return fr_df.set_index('Time')
 
-    def get_cv(self, ifr_binsize=0.05, step=10, smoothing=25):
+    def get_cv(self, fr_binsize=0.05, step=10, smoothing=25):
       spike_train = self.get_spike_train()
 
       window = np.arange(spike_train.spike_at.min(), spike_train.spike_at.max(), step = step)
       shanks = spike_train.shank_label.unique()
       cv_df = pd.DataFrame(index = window, columns = shanks)
-      ifr = self.get_ifr(binsize=ifr_binsize)
+      fr = self.get_fr(binsize=fr_binsize)
 
       for t in window:
         for shank in shanks:
-          samples = ifr[shank].loc[t:t+step]
+          samples = fr[shank].loc[t:t+step]
           mu = np.mean(samples)
           std = np.std(samples)
           if mu != 0: cv_df[shank].loc[t] = std/mu
@@ -179,7 +179,7 @@ class Animal:
       self.start, self.end = start, end
       return self
 
-    def get_fire_rates(self):
+    def get_firing_rates_freq(self):
       spike_train = self.get_spike_train()
       start, end = spike_train.spike_at.min(), spike_train.spike_at.max()
 
@@ -187,8 +187,8 @@ class Animal:
 
       n_spikes = len(spike_train)
 
-      fire_rates = spike_train.groupby(['shank_label','cluster']).spike_at.count().apply(lambda spike_counts: spike_counts/duration)
-      return fire_rates
+      firing_rates = spike_train.groupby(['shank_label','cluster']).spike_at.count().apply(lambda spike_counts: spike_counts/duration)
+      return firing_rates
 
 
 import ipywidgets as ipw
@@ -390,37 +390,37 @@ class _AnalysisScreen(AppLayout):
     self.spikes_dist_header = ipw.HBox(children=[ipw.HTML(value="<h2>Spikes Distribuition</h2>"), ipw.HBox(children=[ipw.Label(value='Time Frequency Bins'), self.spikes_dist_freq]), self.spikes_dist_colorize], layout=ipw.Layout(padding="0 2% 0 2%", align_items="center", justify_content="space-between"))
     self.spikes_dist_PlotBox = _PlotBox(header=self.spikes_dist_header)
 
-    self.IFR_delta_window = ipw.BoundedFloatText(value=0.5, min=1, max=10000.0, step=0.1, description='', layout=ipw.Layout(width="30%"))
-    self.IFR_smoothing_coef = ipw.BoundedIntText(value=25, min=1, max=100, step=1, description='', layout=ipw.Layout(width="30%"))
-    self.IFR_header = ipw.HBox(children=[ipw.HTML(value="<h2>Instantaneous Fire Rates Trend</h2>"), ipw.HBox(children=[ipw.Label(value='Interval (s)'), self.IFR_delta_window]), ipw.HBox(children=[ipw.Label(value='Smoothing Coeficient'), self.IFR_smoothing_coef])], layout=ipw.Layout(padding="0 2% 0 2%", align_items="center", justify_content="space-between"))
-    self.IFR_PlotBox =  _PlotBox(header=self.IFR_header)
+    self.fr_delta_window = ipw.BoundedFloatText(value=0.5, min=1, max=10000.0, step=0.1, description='', layout=ipw.Layout(width="30%"))
+    self.fr_smoothing_coef = ipw.BoundedIntText(value=25, min=1, max=100, step=1, description='', layout=ipw.Layout(width="30%"))
+    self.fr_header = ipw.HBox(children=[ipw.HTML(value="<h2>Firing Rates Trend</h2>"), ipw.HBox(children=[ipw.Label(value='Interval (s)'), self.fr_delta_window]), ipw.HBox(children=[ipw.Label(value='Smoothing Coeficient'), self.fr_smoothing_coef])], layout=ipw.Layout(padding="0 2% 0 2%", align_items="center", justify_content="space-between"))
+    self.fr_PlotBox =  _PlotBox(header=self.fr_header)
    
     self.CV_delta_window = ipw.BoundedFloatText(value=60, min=0.5, max=10000.0, step=0.5, description='', layout=ipw.Layout(width="30%"))
-    self.CV_ifr_delta_window = ipw.BoundedFloatText(value=10, min=.05, max=100.0, step=.05, description='', layout=ipw.Layout(width="30%"))
+    self.CV_fr_delta_window = ipw.BoundedFloatText(value=10, min=.05, max=100.0, step=.05, description='', layout=ipw.Layout(width="30%"))
     self.CV_smoothing_coef = ipw.BoundedIntText(value=25, min=1, max=100, step=1, description='', layout=ipw.Layout(width="30%"))
-    self.CV_header = ipw.HBox(children=[ipw.HTML(value="<h2>Coefficient of Variation Trend</h2>"), ipw.HBox(children=[ipw.Label(value='Interval (s)'), self.CV_delta_window]), ipw.HBox(children=[ipw.Label(value='IFR Interval (s)'), self.CV_ifr_delta_window]), ipw.HBox(children=[ipw.Label(value='Smoothing Coeficient'), self.CV_smoothing_coef])], layout=ipw.Layout(padding="0 2% 0 2%", align_items="center", justify_content="space-between"))
+    self.CV_header = ipw.HBox(children=[ipw.HTML(value="<h2>Coefficient of Variation Trend</h2>"), ipw.HBox(children=[ipw.Label(value='Interval (s)'), self.CV_delta_window]), ipw.HBox(children=[ipw.Label(value='fr Interval (s)'), self.CV_fr_delta_window]), ipw.HBox(children=[ipw.Label(value='Smoothing Coeficient'), self.CV_smoothing_coef])], layout=ipw.Layout(padding="0 2% 0 2%", align_items="center", justify_content="space-between"))
     self.CV_PlotBox = _PlotBox(header=self.CV_header)
 
-    self.fire_rates_histplot_nbins = ipw.BoundedIntText(value=10, min=0, max=500, step=1, description='', layout=ipw.Layout(width="45%"))
-    self.fire_rates_colorize = ipw.Checkbox(description="Colorize Shanks", value=False, style={"description_width":"initial"})
-    self.fire_rates_histplot_header = ipw.HBox(children=[ipw.HTML(value="<h2>Fire Rates Histogram</h2>"), ipw.HBox(children=[ipw.Label(value='Bins'), self.fire_rates_histplot_nbins]), self.fire_rates_colorize], layout=ipw.Layout(padding="0 2% 0 2%", align_items="center", justify_content="space-between"))
-    self.fire_rates_PlotBox = _PlotBox(header=self.fire_rates_histplot_header)  
+    self.firing_rates_histplot_nbins = ipw.BoundedIntText(value=10, min=0, max=500, step=1, description='', layout=ipw.Layout(width="45%"))
+    self.firing_rates_colorize = ipw.Checkbox(description="Colorize Shanks", value=False, style={"description_width":"initial"})
+    self.firing_rates_histplot_header = ipw.HBox(children=[ipw.HTML(value="<h2>Firing Rates Histogram</h2>"), ipw.HBox(children=[ipw.Label(value='Bins'), self.firing_rates_histplot_nbins]), self.firing_rates_colorize], layout=ipw.Layout(padding="0 2% 0 2%", align_items="center", justify_content="space-between"))
+    self.firing_rates_PlotBox = _PlotBox(header=self.firing_rates_histplot_header)  
     
-    self.graphs = ipw.VBox(children=[self.raster_PlotBox, self.spikes_dist_PlotBox, self.IFR_PlotBox, self.CV_PlotBox, self.fire_rates_PlotBox], layout=ipw.Layout(width="100%", border="1px solid gray"))
+    self.graphs = ipw.VBox(children=[self.raster_PlotBox, self.spikes_dist_PlotBox, self.fr_PlotBox, self.CV_PlotBox, self.firing_rates_PlotBox], layout=ipw.Layout(width="100%", border="1px solid gray"))
 
     self.confirm_btn = ipw.Button(description='Confirm', width='100%')
     self.confirm_btn.on_click(lambda click: self._refresh_views(
         animal=self.ani_dpdw.value.set_time_interval(self.time_range_slider.index[0], self.time_range_slider.index[1]),
-        ifr_delta=self.IFR_delta_window.value,
-        ifr_smooth_coef=self.IFR_smoothing_coef.value,
+        fr_delta=self.fr_delta_window.value,
+        fr_smooth_coef=self.fr_smoothing_coef.value,
         cv_delta=self.CV_delta_window.value,
-        cv_ifr_binsize=self.CV_ifr_delta_window.value,
-        cv_smooth_coef=self.IFR_smoothing_coef.value,
+        cv_fr_binsize=self.CV_fr_delta_window.value,
+        cv_smooth_coef=self.fr_smoothing_coef.value,
         spikes_dist_freq =  self.spikes_dist_freq.value,
         spikes_dist_color = self.spikes_dist_colorize.value,
         raster_color = self.raster_colorize.value,
-        fire_rates_histplot_nbins = self.fire_rates_histplot_nbins.value,
-        fire_rates_histplot_color = self.fire_rates_colorize.value,
+        firing_rates_histplot_nbins = self.firing_rates_histplot_nbins.value,
+        firing_rates_histplot_color = self.firing_rates_colorize.value,
         ))
 
                           
@@ -482,21 +482,21 @@ class _AnalysisScreen(AppLayout):
       pass
     return fig
 
-  def _get_fire_rates_histplot(self, fire_rates, nbins=10, color=None):
-      color = fire_rates.shank_label if color else None
-      fig = xp.histogram(x=fire_rates.spike_at,
+  def _get_firing_rates_histplot(self, firing_rates, nbins=10, color=None):
+      color = firing_rates.shank_label if color else None
+      fig = xp.histogram(x=firing_rates.spike_at,
                       color=color,
                       nbins=nbins)
       
       fig.update_layout(
-        title_text='FR dist', 
+        title_text='Firing Rates Distribution', 
         xaxis_title_text='Frequency', 
         yaxis_title_text='#$Spikes', 
         bargap=0.1,
         hovermode="x unified"
       )
 
-      return fig.update_traces(hovertemplate='Fire Rates: %{y}')
+      return fig.update_traces(hovertemplate='Firing Rates: %{y}')
 
 
   def _refresh_views(self, **args):
@@ -515,19 +515,19 @@ class _AnalysisScreen(AppLayout):
         color = 'shank_label' if args.get('spikes_dist_color') else None
         spikes_dist_fig = self._get_spikes_dist_fig(spike_train, freq=args.get('spikes_dist_freq'), color=color)
         display(spikes_dist_fig)
-      with self.IFR_PlotBox.get_output():
+      with self.fr_PlotBox.get_output():
         print()
-        ifr_df = animal.get_ifr(binsize=args.get("ifr_delta"), smoothing=args.get("ifr_smooth_coef")).set_index("Hours")
-        ifr_fig = self._fig_graph(ifr_df.fillna(0), title=f'Instantaneous Fire Rate', ylabel='Count')
-        display(ifr_fig)
+        fr_df = animal.get_fr(binsize=args.get("fr_delta"), smoothing=args.get("fr_smooth_coef")).set_index("Hours")
+        fr_fig = self._fig_graph(fr_df.fillna(0), title=f'Firing Rate', ylabel='Count')
+        display(fr_fig)
       with self.CV_PlotBox.get_output():
         print()
-        cv_df = animal.get_cv(step = args.get("cv_delta"), ifr_binsize=args.get("cv_ifr_binsize"), smoothing=args.get("cv_smooth_coef")).set_index("Hours")
+        cv_df = animal.get_cv(step = args.get("cv_delta"), fr_binsize=args.get("cv_fr_binsize"), smoothing=args.get("cv_smooth_coef")).set_index("Hours")
         cv_fig = self._fig_graph(cv_df.fillna(0), title=f'Coefficient of Variation', ylabel='CV')
         display(cv_fig)
-      with self.fire_rates_PlotBox.get_output():
+      with self.firing_rates_PlotBox.get_output():
         print()
-        fig = self._get_fire_rates_histplot(animal.get_fire_rates().reset_index(), nbins=args.get('fire_rates_histplot_nbins'), color=args.get('fire_rates_histplot_color'))
+        fig = self._get_firing_rates_histplot(animal.get_firing_rates_freq().reset_index(), nbins=args.get('firing_rates_histplot_nbins'), color=args.get('firing_rates_histplot_color'))
         display(fig)
 
   def clear_outputs(self):
