@@ -6,8 +6,8 @@
 <li>simple .txt <sub>(containing three rows with space separated values as follow)
 </sub></li><ul>
 <li>spike time (in seconds)</li>
-<li>shank</li>
 <li>cluster</li>
+<li>shank</li>
 </ul>
 <p>The current suported visualizations are:</p>
 <h3 id="raster-plot">Raster Plot</h3>
