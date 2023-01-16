@@ -1,6 +1,18 @@
-<p><a href="https://colab.research.google.com/github/IzaquielCordeiro/NeuralReport/blob/main/NeuralReport.ipynb" target="_blank" rel="noopener noreferrer"> <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a></p>
+<p><a href="https://colab.research.google.com/github/IzaquielCordeiro/NeuralReport/blob/main/NeuralReport.ipynb"> <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a></p>
 <h1 id="neural-report"><strong><code>Neural Report</code></strong></h1>
 <p>This is a project from my final paper in Computer Science by <a href="https://www.google.com/maps/place/UFCG+-+Campus+Campina+Grande/@-7.2171368,-35.9097543,15z/data=!4m5!3m4!1s0x0:0xd98e854f0b0d6fe1!8m2!3d-7.2171368!4d-35.9097543">Federal University of Campina Grande</a> A Colab Notebook intergrated with Google Drive that seeks and load spike train data acquired from extracelular recordings, where microprobes measures electrophysiology activity of the brain <em>in-vivo</em>.</p>
+<hr>
+<p>The suggested structure for working with this follow as:</p>
+<pre><code>experiments/
+├─ 01Jan2023/
+│  ├─ recording_1
+│  ├─ recording_2
+├─ 02Jan2023/
+│  ├─ Recording_1
+│  ├─ Recording_2
+│  ├─ Recording_4
+</code></pre>
+<p>All internal files in an experiment  directory will be converted into one single data of recording.</p>
 <hr>
 <p>The current suported data files are:  </p><li><a href="https://klusta.readthedocs.io/en/latest/kwik/">klusta .kwik</a></li>
 <li>simple .txt <sub>(containing three rows with space separated values as follow)
